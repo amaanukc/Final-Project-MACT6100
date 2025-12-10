@@ -92,13 +92,9 @@ base <- left_join(base, select(drivers, driverId, dob, nationality), by = "drive
 base <- left_join(base, select(constructors, constructorId, const_nat = nationality), by = "constructorId")
 base <- left_join(base, select(qualifying, raceId, driverId, quali_pos = position), by = c("raceId", "driverId"))
 
-# 3.2 NEW: ADD SEASON STANDINGS (The Missing Link)
-# We join the standings tables to get points before the race
-# Note: Standings files track points after the race, so we need to be careful with logic.
-# A simpler way for a report: Use the 'driver_form_3' we made as the dynamic metric,
-# and use 'constructor_standings' for Team Strength.
+# 3.2: Add Season Standings
 
-# Let's aggregate cumulative points manually to be safe and accurate
+# Aggregate cumulative points
 base <- arrange(base, driverId, year, round)
 base <- group_by(base, driverId, year)
 base <- mutate(base,
